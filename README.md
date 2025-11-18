@@ -40,8 +40,8 @@ Building a flashcard generator to learn multi-step AI workflows.
 ### Current Status:
     - ✅ Phase 1: Basic structure & file reading
     - ✅ Phase 2: Generate questions (next)
-    - 📋 Phase 3: Generate answers
-    - 📋 Phase 4: Save flashcards
+    - ✅ Phase 3: Generate answers
+    - ✅ Phase 4: Save flashcards
 
 ### How to use:
     ```bash

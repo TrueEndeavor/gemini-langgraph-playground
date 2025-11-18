@@ -41,7 +41,7 @@ def generate_questions(topic: str) -> list:
 	1. What is [topic]?
 	"""
 
-	print(f"Generating questions about '{topic}'...")
+	print(f"\nGenerating questions about '{topic}'...")
 	response = ask_gemini(prompt)
 
 	# Parse Gemini's response
@@ -53,6 +53,45 @@ def generate_questions(topic: str) -> list:
 	#print(response)
 
 	return questions
+
+# Step 2: Generate anwers
+def generate_answers(questions: list) -> list:
+	flashcards = []
+
+	for i, q in enumerate(questions, 1):
+
+		prompt = f"""
+		Answer this question in 1-5 short words {q}
+		"""
+		#print(f"\nGenerating answers for '{q}'...")
+		#print(f"\nGenerating answers...")
+		response = ask_gemini(prompt)
+
+		flashcards.append({
+			"question": q,
+			"answer": response
+			})
+
+	return flashcards
+
+# Step 3: Save Flashcards in a file
+def save_flashcards(topic: str, flashcards: list):
+	os.makedirs("flashcards", exist_ok=True)
+	filename = f"flashcards/{topic.replace(' ', '_').lower()}.txt"
+	
+	print(f"\nSaving flashcards to {filename}...")
+	
+	with open(filename, "w") as f:
+		f.write(f"# Flashcards: {topic}\n")
+		f.write(f"# Total: {len(flashcards)} cards\n")
+		f.write("\n\n")
+		
+		for i, card in enumerate(flashcards, 1):
+			f.write(f"CARD {i}\n")
+			f.write(f"Q: {card['question']}\n")
+			f.write(f"A: {card['answer']}\n")
+	
+	print(f"✅ Saved to: {filename}")
 
 # Main function
 if __name__ == "__main__":
@@ -78,7 +117,9 @@ if __name__ == "__main__":
 	questions = generate_questions(user_prompt)
 	print("QUESTIONS: ")
 	print(questions)
-	# TODO: Generate Answers
-	# TODO: Save flashcards in file
+	answers = generate_answers(questions)
+	print("ANSWERS: ")
+	print(answers)
+	save_flashcards(user_prompt, answers)
 
 	print("\nDone")
