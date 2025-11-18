@@ -41,13 +41,18 @@ def generate_questions(topic: str) -> list:
 	1. What is [topic]?
 	"""
 
-	print(f"Generating questions about '{topic}...")
+	print(f"Generating questions about '{topic}'...")
 	response = ask_gemini(prompt)
 
-	print("Raw Response")
-	print(response)
+	# Parse Gemini's response
+	questions = []
+	for line in response.split('\n'):
+		questions.append(line)
 
-	return []
+	#print("Raw Response")
+	#print(response)
+
+	return questions
 
 # Main function
 if __name__ == "__main__":
@@ -71,6 +76,8 @@ if __name__ == "__main__":
 	print("Basic Flashcard Generator")
 	print("PROMPT: ", user_prompt)
 	questions = generate_questions(user_prompt)
+	print("QUESTIONS: ")
+	print(questions)
 	# TODO: Generate Answers
 	# TODO: Save flashcards in file
 
