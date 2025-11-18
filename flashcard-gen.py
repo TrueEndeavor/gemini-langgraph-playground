@@ -5,6 +5,7 @@ import google.generativeai as genai
 genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
 MODEL_NAME = "gemini-2.5-flash"
 
+# GENERIC function to ask gemini anything
 def ask_gemini(prompt: str)->str:
 	if not os.environ.get("GEMINI_API_KEY"):
 		raise ValueError(
@@ -24,6 +25,31 @@ def ask_gemini(prompt: str)->str:
 			print(f"ERROR: You've hit the rate limit of Gemini")
 		raise
 
+# FLASHCARD GENERATOR
+# Step 1: Generate Questions
+def generate_questions(topic: str) -> list:
+	prompt = f"""
+	Generate 5 study questions of one-word answers about {topic}
+
+	Requirements:
+	- Test understanding
+	- Mix difficulty levels
+	- Return ONLY questions, numbered 1-5
+	- One per line
+
+	Example:
+	1. What is [topic]?
+	"""
+
+	print(f"Generating questions about '{topic}...")
+	response = ask_gemini(prompt)
+
+	print("Raw Response")
+	print(response)
+
+	return []
+
+# Main function
 if __name__ == "__main__":
 	try:
 		with open("prompt.txt", "r") as f:
@@ -40,11 +66,11 @@ if __name__ == "__main__":
 		
 	#answer = ask_gemini(user_prompt)
 	
-	#print("PROMPT: ", user_prompt)
 	#print("GEMINI'S ANSWER: ", answer)
 
-	print("Basic Flashcard Genertor")
-	# TODO: Generate Questions
+	print("Basic Flashcard Generator")
+	print("PROMPT: ", user_prompt)
+	questions = generate_questions(user_prompt)
 	# TODO: Generate Answers
 	# TODO: Save flashcards in file
 
