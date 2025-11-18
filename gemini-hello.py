@@ -1,4 +1,5 @@
 import os
+import sys
 import google.generativeai as genai
 
 genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
@@ -24,7 +25,19 @@ def ask_gemini(prompt: str)->str:
 		raise
 
 if __name__ == "__main__":
-	user_prompt = "What is photosynthesis"
+	try:
+		with open("prompt.txt", "r") as f:
+			user_prompt = f.read().strip()
+		print(f"Reading from prompt.txt")
+	except FileNotFoundError:
+		print("ERROR: prompt.txt not found")
+		print("Create prompt.txt with your question and try again")
+		sys.exit(1)
+
+	if not user_prompt:
+		print("ERROR: prompt.txt is empty")
+		sys.exit(1)
+		
 	answer = ask_gemini(user_prompt)
 	
 	print("PROMPT: ", user_prompt)
